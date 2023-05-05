@@ -14,7 +14,7 @@ log.info(" ********** Iniciando Julia ********** ")
 from julia.api import Julia
 jl = Julia(compiled_modules=False)
 # from julia import Main
-jl.eval('include("main.jl")')
+jl.eval('include("pruebas.jl")')
 log.info(" ********** Julia iniciada **********")
 
 customtkinter.set_appearance_mode("Dark")
@@ -27,9 +27,9 @@ frame = customtkinter.CTkFrame(master=root)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
 
 
+
 def obtener_resultados():
     jl.eval('resultados()')
-
 
 def empezar_resultados():
     log.info(" ********** Calculando resultados ********** ")
@@ -38,6 +38,8 @@ def empezar_resultados():
     obtener_resultados()
     log.info(" ********** Termino de calcular ********** ")
     button.configure(state="normal")
+
+
 
 
 label = customtkinter.CTkLabel(master=frame, text="EEG", font=("Roboto", 32))

@@ -1,4 +1,6 @@
-function resultados()
-    println("Hola uwu")
+using JLD
+
+function resultados(prueba)
+    println(prueba)
 
 end

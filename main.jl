@@ -14,10 +14,10 @@ using FuncionesEEG
 
 
 
-function resultados()
+function resultados(path)
     # Aquí se da la dirección donde está el archivo a trabajar
     #Direccion = "C:/Users/1100423746/Dropbox/EEG/exp136_Igancio_32CH.dat"
-    Direccion = "exp136_Igancio_32CH.dat";
+    Direccion = path;
     Dir = split(Direccion,".")[1];
     Archivo = split(basename(Direccion),".")[1];
     Datos = readdlm( Direccion );
