@@ -1,10 +1,6 @@
-println("Hola")
 using DelimitedFiles
-println("Importo DelimitedFiles correctamente")
 using Plots
-println("Importo Plots correctamente")
-using JLD
-println("Importo JLD correctamente")
+using JLD # WARNING: could not import HDF5.exists into JLD
 using GraphRecipes
 using Statistics
 push!(LOAD_PATH, ".")
@@ -13,8 +9,14 @@ using FuncionesEEG
 # import Pkg; Pkg.add("StatsBase")
 
 
+TraysPosP = 0
+TraysNegP = 0
+MVcsda = 0
+ruta_resultados = 0
+
 
 function resultados(path)
+    global TraysPosP, TraysNegP, MVcsda, ruta_resultados
     # Aquí se da la dirección donde está el archivo a trabajar
     #Direccion = "C:/Users/1100423746/Dropbox/EEG/exp136_Igancio_32CH.dat"
     Direccion = path;
@@ -69,10 +71,12 @@ function resultados(path)
     NomTPs = Archivo*"_TraysPolares.jld"
     ruta_archivo = joinpath( ruta_resultados , NomTPs )
     save( ruta_archivo , "TPP" , TraysPosP , "TNP" , TraysNegP )
+    return TraysPosP
 end
 
 
-function visualize_resultados(TraysPosP, TraysNegP)
+function visualize_resultados(TraysPosP)
+    global TraysPosP, TraysNegP, MVcsda, ruta_resultados
     # Generamos colores para las trayectorias para evitar que se confundan
     CTPs = [ :red1 , :lime , :orange, :cyan , :grey54 , :blue2 , :green2 , :deeppink ];
     CTP = GeneraColores( CTPs , TraysPosP );
@@ -106,3 +110,6 @@ function visualize_resultados(TraysPosP, TraysNegP)
         gif( anima, NomBinTray , fps = 120);
     end
 end
+
+
+# resultados("exp136_Igancio_32CH.dat")

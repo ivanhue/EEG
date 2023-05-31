@@ -1,7 +1,7 @@
 import multiprocessing as mp
 import julia
 
-def run_julia(args, result_queue):
+def run_julia(result_queue):
     # Inicializar el entorno de Julia
     jl = julia.Julia()
     
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     result_queue = mp.Queue()
     
     # Crear el proceso de Julia
-    p = mp.Process(target=run_julia, args=((1,), result_queue))
+    p = mp.Process(target=run_julia, args=((1), result_queue))
     
     # Iniciar el proceso de Julia
     p.start()
