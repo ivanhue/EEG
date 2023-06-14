@@ -18,7 +18,6 @@ ruta_resultados = 0
 function resultados(path)
     global TraysPosP, TraysNegP, MVcsda, ruta_resultados
     # Aquí se da la dirección donde está el archivo a trabajar
-    #Direccion = "C:/Users/1100423746/Dropbox/EEG/exp136_Igancio_32CH.dat"
     Direccion = path;
     Dir = split(Direccion,".")[1];
     Archivo = split(basename(Direccion),".")[1];
@@ -110,6 +109,3 @@ function visualize_resultados(TraysPosP)
         gif( anima, NomBinTray , fps = 120);
     end
 end
-
-
-# resultados("exp136_Igancio_32CH.dat")

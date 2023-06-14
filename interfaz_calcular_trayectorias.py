@@ -1,18 +1,15 @@
 import customtkinter
 import time
-import os
 from tkinter import filedialog
 from tkinter import PhotoImage
-import tkinter as tk
 from PIL import Image
-import threading
-import multiprocessing
 import logging as log
 log.basicConfig(
     level=log.INFO,
     format='%(asctime)s %(message)s',
     datefmt='%H:%M:%S'
     )
+
 
 
 INICIAR_JULIA = False
@@ -23,7 +20,6 @@ folder_path = ""
 
 files = []
 
-# def iniciar_julia():
 if INICIAR_JULIA:
     log.info(" ********** Iniciando Julia ********** ")
     # Import julia to python
@@ -33,8 +29,6 @@ if INICIAR_JULIA:
     jl.eval('include("main.jl")')
     log.info(" ********** Julia iniciada **********")
 
-# t = threading.Thread(target=iniciar_julia)
-# t.start()
 
 
 customtkinter.set_appearance_mode("Dark")
@@ -91,10 +85,7 @@ class ConfiguracionesFrame(customtkinter.CTkFrame):
                 self.button3.configure(state="normal")
                 # Obtiene el nombre del archivo
                 self.label2.configure(text=self.filepath.split("/")[-1])
-                folder_path = self.filepath.split("/")[-1]
-                folder_path = folder_path +"gifs"
-                for file_name in os.listdir(folder_path):
-                    files.append(file_name)
+                # TODO: verificar si existen archivos gif para su visualización.
 
         print('Selected:', self.filepath)
 
@@ -105,6 +96,8 @@ class ConfiguracionesFrame(customtkinter.CTkFrame):
         """
         self.button2.configure(state="disabled")
         self._calcular_trayectorias()
+        
+        # Codigo multihilos. No funciona por problemas con Julia.
         # self.app.progressbar.start()
         # t = threading.Thread(target=self._calcular_trayectorias)
         # t = multiprocessing.Process(target=self._calcular_trayectorias, daemon=False)
@@ -123,16 +116,21 @@ class ConfiguracionesFrame(customtkinter.CTkFrame):
         """
         Boton graficar. EJecuta el codigo Julia. Crea una carpeta y guarda todos los archivos '.gif' generados
         """
+        # TODO: Es  necesario especificar la carpeta donde se guardaran los archivos '.gif'
         if not INICIAR_JULIA:
             raise Exception("No se ha iniciado julia")
         else:
             log.info(" ********** Graficando ********** ")
+            
+            # Aqui los valores después de calcular trayectorias se tranforman en variables de Julia.
             # Main.trayp = self.trayp
             # Main.traynp = self.traynp
             # Main.MVcsda = self.MVcsda
             # Main.ruta_resultados = self.ruta_resultados
-            Main.resultados = self.resultados
+            # Y finalmente se llama a la función para visualizar resultados:
             # jl.eval('visualize_resultados(trayp, traynp, MVcsda, ruta_resultados)')
+            
+            Main.resultados = self.resultados
             jl.eval('visualize_resultados(resultados)')
     
     def _calcular_trayectorias(self):
@@ -148,6 +146,7 @@ class ConfiguracionesFrame(customtkinter.CTkFrame):
             
             # threading.Thread(target=obtener_resultados).start()
             Main.path = self.filepath
+            # En caso de que la función de Julia regrese más de un valor, se necesitan guardar en variables.
             # self.trayp, self.traynp, self.MVcsda, self.ruta_resultados = jl.eval('resultados(data)')
             self.resultados = jl.eval('resultados(path)')
             log.info(" ********** Termino de calcular ********** ")
